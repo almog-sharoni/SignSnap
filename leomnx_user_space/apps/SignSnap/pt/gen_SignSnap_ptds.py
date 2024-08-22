@@ -12,8 +12,9 @@ def process_images(dataset_dir, img_size):
     """ Process images and labels from the given directory. """
     img_paths = []
     labels = []
-    
-    for label, dir_name in enumerate(os.listdir(dataset_dir)):
+    print(os.listdir(dataset_dir))
+    index = 0
+    for dir_name in os.listdir(dataset_dir):
         if dir_name.startswith('.'):
             continue
         
@@ -27,8 +28,10 @@ def process_images(dataset_dir, img_size):
             
             img_path = os.path.join(dir_path, img_name)
             img_paths.append(img_path)
-            labels.append(label)
-    
+            labels.append(index)
+
+        index += 1            
+    # print("labels: ", labels)
     return img_paths, labels
 
 def split_data(img_paths, labels, train_split, val_split, test_split):
@@ -58,25 +61,26 @@ def split_data(img_paths, labels, train_split, val_split, test_split):
 def create_tensor_dataset(img_paths, labels, img_size):
     """ Create a TensorDataset from image paths and labels. """
     num_imgs = len(img_paths)
-    ds_imgs = np.empty((num_imgs,1 , img_size, img_size), dtype=np.float32)
+    ds_imgs = np.empty((num_imgs, 1, img_size, img_size), dtype=np.float32)
     ds_lbls = np.empty((num_imgs), int)
     
     transform = transforms.Compose([
         transforms.Grayscale(),  # Convert image to grayscale
-        transforms.Resize((img_size, img_size)),  # Resize image
+        # transforms.Resize((img_size, img_size)),  # Resize image
         transforms.ToTensor(),  # Convert image to tensor
+        transforms.Normalize((0.5,), (0.5,))  # Normalize image to [-1, 1] (if needed)
     ])
     
     for i, img_path in enumerate(img_paths):
         try:
             image = Image.open(img_path)
             image = transform(image)
-            # ds_imgs[i] = image.numpy().transpose((1, 2, 0))  # Convert from CHW to HWC
+            ds_imgs[i] = image.numpy()
             ds_lbls[i] = labels[i]
         except Exception as e:
             print(f"Error processing image {img_path}: {e}")
             continue
-    
+    ds_imgs = np.squeeze(ds_imgs, axis=1)
     pt_tensor_imgs = torch.tensor(ds_imgs)
     pt_tensor_lbls = torch.tensor(ds_lbls, dtype=torch.long)
     
@@ -96,6 +100,7 @@ def gen_pt_ds(dataset_dir, train_split, val_split, test_split, output_dir):
     test_dataset = create_tensor_dataset(test_paths, test_labels, img_size)
 
     label_names = [d for d in os.listdir(dataset_dir) if not d.startswith('.')]
+    print(f'Label names: {label_names}')
     
     torch.save(dict(
         pt_ds=train_dataset,
@@ -119,8 +124,8 @@ def gen_pt_ds(dataset_dir, train_split, val_split, test_split, output_dir):
 
 if __name__ == '__main__':
     ap = argparse.ArgumentParser(description='Generate PyTorch dataset from sign language images')   
-    ap.add_argument('-d', metavar='<dataset_directory>', type=str, required=True, help='Path to the root directory of the dataset')
-    ap.add_argument('-o', metavar='<output_directory>', type=str, required=True, help='Directory where the output files will be saved')
+    ap.add_argument('-d', metavar='<dataset_directory>', type=str, default="../data", help='Path to the root directory of the dataset')
+    ap.add_argument('-o', metavar='<output_directory>', type=str, default="workspace", help='Directory where the output files will be saved')
     ap.add_argument('--train_split', type=float, default=0.7, help='Proportion of the data to use for training (default=0.7)')
     ap.add_argument('--val_split', type=float, default=0.15, help='Proportion of the data to use for validation (default=0.15)')
     ap.add_argument('--test_split', type=float, default=0.15, help='Proportion of the data to use for testing (default=0.15)')
@@ -137,3 +142,5 @@ if __name__ == '__main__':
     print(f'Reading sign language dataset from {dataset_dir}')
     
     gen_pt_ds(dataset_dir, train_split, val_split, test_split, output_dir)
+
+

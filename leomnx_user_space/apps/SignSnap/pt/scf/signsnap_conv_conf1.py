@@ -3,16 +3,16 @@ def set_args(args) :
 
    args.tdl   = False         # tourchvision downloaded dataset (train and dev)   
    args.spl   = False         # Split train,validate from master dataset  
-   args.dbn   = 'mnist_conv' # dataset name    
+   args.dbn   = 'sign_lang'   # dataset base name
    args.ver   = ''            # dataset version (within name)    
    args.tp    = '0.1'         # Test set percentage 0 to 1       
    args.nep   = '20'          # Number of epoch  
-   args.bs    = 'calc'        # batch size 
+   args.bs    = '32'        # batch size 
    args.lr    = '0.001'       # Learn rate
    args.ncl   = '2'           # num conv layers
    args.pool  = True          # apply max pooling 2x2 after each conv layer , currently applicable only without padding  
-   args.nfl   = '2'           # num FC layers   
-   args.nhcc  = '6'           # num hidden conv out ch     
+   args.nfl   = '3'           # num FC layers   
+   args.nhcc  = '3'           # num hidden conv out ch     
    args.nlcc  = '12'          # num last conv out ch, default  
    args.ccc   = 'NA'          # explicit ch_out per conv layer config, ex: \'2,4,8\' override nhcc,nlcc        
    args.cgr   = 'NA'          # explicit grouping for ccc option, ex: \'2,4,8\'      
