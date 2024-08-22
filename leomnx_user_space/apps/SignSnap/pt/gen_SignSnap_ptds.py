@@ -58,21 +58,20 @@ def split_data(img_paths, labels, train_split, val_split, test_split):
 def create_tensor_dataset(img_paths, labels, img_size):
     """ Create a TensorDataset from image paths and labels. """
     num_imgs = len(img_paths)
-    ds_imgs = np.empty((num_imgs, img_size, img_size), dtype=np.float32)
+    ds_imgs = np.empty((num_imgs,1 , img_size, img_size), dtype=np.float32)
     ds_lbls = np.empty((num_imgs), int)
     
     transform = transforms.Compose([
         transforms.Grayscale(),  # Convert image to grayscale
         transforms.Resize((img_size, img_size)),  # Resize image
         transforms.ToTensor(),  # Convert image to tensor
-        transforms.Normalize((0.5,), (0.5,))  # Normalize image to [-1, 1] (if needed)
     ])
     
     for i, img_path in enumerate(img_paths):
         try:
             image = Image.open(img_path)
             image = transform(image)
-            ds_imgs[i] = image.numpy().transpose((1, 2, 0))  # Convert from CHW to HWC
+            # ds_imgs[i] = image.numpy().transpose((1, 2, 0))  # Convert from CHW to HWC
             ds_lbls[i] = labels[i]
         except Exception as e:
             print(f"Error processing image {img_path}: {e}")
