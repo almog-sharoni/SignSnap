@@ -1,0 +1,2 @@
+export MY_LM_ENV="/Users/almog/Documents/leo_mannix_env"
+source "/Users/almog/Documents/leo_mannix_env"/leo_mannix/setup_win.sh

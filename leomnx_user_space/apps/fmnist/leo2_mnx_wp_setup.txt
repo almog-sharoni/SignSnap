@@ -1,0 +1,11 @@
+wp_mode           0
+is_seq_ref_mode   0
+invert_clk_dut    0
+invert_clk_seq    0
+dut_fs            0
+dut_dl            6
+dut_di            1
+wp_fast_clk_dl    0
+wp_prog_clk_mode  0
+wp_inv_fast_clk   1
+
