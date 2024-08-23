@@ -421,7 +421,7 @@ def run_gen(args) :
 
         
             # Weights        
-            w_np = (weights['layers.'+layer_name+wstr]).detach().numpy()
+            w_np = (weights['layers.'+layer_name+wstr]).detach().to('cpu').numpy()
             w_max_clamp_val,w_min_clamp_val = (127,-128) 
             np_arr_sc_int = (scale_w * w_np).astype(int)
             w_np_arr_sc_int_clamp = np.maximum(w_min_clamp_val,np.minimum(w_max_clamp_val,np_arr_sc_int))      
@@ -430,7 +430,7 @@ def run_gen(args) :
             #Bias
             if (scale_b != None) and not train_args.nlb :             
              
-              b_np = (weights['layers.'+layer_name+'.bias']).detach().numpy()
+              b_np = (weights['layers.'+layer_name+'.bias']).detach().to('cpu').numpy()
               b_max_clamp_val,b_min_clamp_val = ((2**31)-1,-1*(2**31))  
 
               b_np_arr_sc_int = (scale_b * b_np).astype(int)                     
