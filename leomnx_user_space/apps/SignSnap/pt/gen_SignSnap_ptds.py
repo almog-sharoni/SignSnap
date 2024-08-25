@@ -66,9 +66,9 @@ def create_tensor_dataset(img_paths, labels, img_size):
     
     transform = transforms.Compose([
         transforms.Grayscale(),  # Convert image to grayscale
-        # transforms.Resize((img_size, img_size)),  # Resize image
+        transforms.Resize((img_size, img_size)),  # Resize image
         transforms.ToTensor(),  # Convert image to tensor
-        transforms.Normalize((0.5,), (0.5,))  # Normalize image to [-1, 1] (if needed)
+        # transforms.Normalize((0.5,), (0.5,))  # Normalize image to [-1, 1] (if needed)
     ])
     
     for i, img_path in enumerate(img_paths):
@@ -89,7 +89,7 @@ def create_tensor_dataset(img_paths, labels, img_size):
 def gen_pt_ds(dataset_dir, train_split, val_split, test_split, output_dir):
     print('Generating datasets...')
     
-    img_size = 128  # Assuming 128x128 images
+    img_size = 40 
     
     img_paths, labels = process_images(dataset_dir, img_size)
     
