@@ -1,0 +1,12 @@
+num_conv_layers    3
+pool               1
+num_rnn_layers     0
+rnn_input_size     0
+rnn_hidden_size    0
+num_fc_layers      1
+img_num_row       40
+img_num_col       40
+no_conv_bias       0
+no_fc_bias         0
+num_conv_ch            1   6   6  36 
+fc_dim                36  36 

@@ -29,7 +29,7 @@ if args.ddn : # Downloaded
 elif args.gdn : # Downloaded
 # Loading custom Generated dataset
    workspace_path = './workspace/' 
-   test_set_file_name =  workspace_path + args.gdn + '_ds_test.pt' 
+   test_set_file_name =  workspace_path + args.gdn + '_test.pt' 
    print("Loading Test dataset from: %s" % test_set_file_name)
    test_set= torch.load(test_set_file_name)['pt_ds'] 
 
